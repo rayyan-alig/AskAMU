@@ -1,0 +1,10 @@
+# Don't upload env or local junk
+
+__pycache__/
+*.pyc
+.env
+streamlit/secrets.toml
+data_pdf/
+data_web/
+data/processed_log
+*.db

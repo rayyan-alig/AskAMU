@@ -1,0 +1,11 @@
+streamlit
+llama-index
+llama-index-llms-gemini
+llama-index-embeddings-gemini
+llama-index-vector-stores-pinecone
+pinecone-client
+google-generativeai
+python-dotenv
+PyMuPDF
+playwright
+requests
