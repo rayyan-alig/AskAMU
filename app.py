@@ -38,7 +38,6 @@ div[data-testid="stVerticalBlock"] {
 </style>
 """, unsafe_allow_html=True)
 
-# --- Streamlit App Config ---
 st.set_page_config(
     page_title="AMU AI Assistant",
     page_icon="🎓",
@@ -60,7 +59,6 @@ st.markdown(
 )
 
 
-# --- Initialize Session State Memory ---
 if "chat_memory" not in st.session_state:
     st.session_state.chat_memory = ChatMemoryBuffer.from_defaults(token_limit=5000)
 
@@ -70,8 +68,6 @@ if "messages" not in st.session_state:
     ]
 
 
-
-# --- Load RAG Chat Engine ---
 @st.cache_resource
 def get_chat_engine():
     try:
