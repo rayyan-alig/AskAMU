@@ -3,11 +3,9 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 
-# --- Load password from environment or Streamlit secrets ---
-load_dotenv() # Load .env for local development
+load_dotenv() 
 CORRECT_PASSWORD = os.getenv("APP_PASSWORD") or st.secrets.get("auth", {}).get("password", None)
 
-# --- Authentication ---
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
@@ -26,7 +24,6 @@ if not st.session_state.authenticated:
 
 
 from rag_pipeline import load_index
-# ✨ Import the more robust chat engine
 from llama_index.core.chat_engine import CondensePlusContextChatEngine
 from llama_index.core.memory import ChatMemoryBuffer
 from llama_index.core import Settings
@@ -107,21 +104,17 @@ def get_chat_engine():
 
 chat_engine = get_chat_engine()
 
-# --- Sidebar for Logout ---
 with st.sidebar:
     if st.button("🔓 Logout"):
         st.session_state.authenticated = False
         st.rerun()
 
-# --- Display Chat History ---
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
 
-# --- Handle User Input ---
 if prompt := st.chat_input("Ask me anything about AMU..."):
-    # Add user message
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
@@ -131,7 +124,6 @@ if prompt := st.chat_input("Ask me anything about AMU..."):
         with st.spinner("Thinking..."):
             try:
                 if chat_engine:
-                    # Use the chat engine's stream_chat method directly
                     streaming_response = chat_engine.stream_chat(prompt)
                     full_response = ""
                     for token in streaming_response.response_gen:
@@ -156,7 +148,6 @@ if prompt := st.chat_input("Ask me anything about AMU..."):
                 full_response = f"❌ Error during query: {e}"
                 message_placeholder.markdown(full_response)
 
-    # Save assistant reply to chat history
     st.session_state.messages.append({"role": "assistant", "content": full_response})
 
     
