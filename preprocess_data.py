@@ -9,8 +9,6 @@ PDF_PATH = "data_pdf"
 URL_FILE = "data_web/urls.txt"
 PROCESSED_LOG = "data/processed_log.json"
 
-# ------------------ Helpers for tracking ------------------
-
 def load_processed_log():
     if os.path.exists(PROCESSED_LOG):
         with open(PROCESSED_LOG, "r") as f:
@@ -26,7 +24,6 @@ def hash_file(filepath):
     with open(filepath, "rb") as f:
         return hashlib.md5(f.read()).hexdigest()
 
-# ------------------ Load PDFs with Skipping ------------------
 
 def load_pdfs():
     if not os.path.exists(PDF_PATH):
@@ -52,7 +49,6 @@ def load_pdfs():
         reader = SimpleDirectoryReader(input_files=[filepath])
         docs = reader.load_data()
 
-        # Add source metadata for traceability
         for doc in docs:
             doc.metadata.update({
                 "source": filepath,
@@ -67,9 +63,6 @@ def load_pdfs():
     processed["pdfs"] = already_done_hashes
     save_processed_log(processed)
     return new_docs
-
-
-# ------------------ Load URLs with Skipping ------------------
 
 async def load_urls_async():
     if not os.path.exists(URL_FILE):
@@ -122,7 +115,6 @@ async def load_urls_async():
     print(f"✅ Scraped {len(documents)} new URLs.")
     return documents
 
-# ------------------ Main Document Loader ------------------
 
 def load_docs():
     pdf_docs = load_pdfs()
